@@ -17,25 +17,24 @@ Implement coordinated motion using a Finite State Machine.
 Demonstrate deterministic real-time motor control using FPGA.
 
 # Hardware Used
-Nexys-4 FPGA Development Board
-Xilinx Vivado Design Suite
-Verilog HDL
-L293D Dual H-Bridge Motor Driver
-Conventional DC Motor
-DC Geared Motor
-SG5010 Servo Motors (Shoulder, Elbow and Wrist)
-External 6 V Power Supply
-Breadboard and Connecting Wires
+Nexys-4 FPGA Development Board,
+Xilinx Vivado Design Suite,
+Verilog HDL,
+L293D Dual H-Bridge Motor Driver,
+Conventional DC Motor,
+DC Geared Motor,
+SG5010 Servo Motors (Shoulder, Elbow and Wrist),
+External 6 V Power Supply,
+Breadboard and Connecting Wires.
 
 # Software Used
-Xilinx Vivado
-Verilog HDL
-XDC Constraints File
+Xilinx Vivado,
+Verilog HDL,
+XDC Constraints File,
 
 # Project Workflow
-PWM Generator
-      │
-      ▼
+PWM Generator--->
+      
 LED Verification
       │
       ▼
