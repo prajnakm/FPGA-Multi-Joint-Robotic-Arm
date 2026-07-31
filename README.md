@@ -16,7 +16,7 @@ Develop a three-joint robotic arm.
 Implement coordinated motion using a Finite State Machine.
 Demonstrate deterministic real-time motor control using FPGA.
 
-#nHardware Used
+# Hardware Used
 Nexys-4 FPGA Development Board
 Xilinx Vivado Design Suite
 Verilog HDL
