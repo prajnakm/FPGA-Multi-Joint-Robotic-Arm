@@ -35,21 +35,16 @@ XDC Constraints File,
 # Project Workflow
 PWM Generator--->
       
-LED Verification
-      │
-      ▼
-DC Motor Speed Control
-      │
-      ▼
-DC Geared Motor Analysis
-      │
-      ▼
-Servo Motor Calibration
-      │
-      ▼
-Three-Joint Robotic Arm
-      │
-      ▼
+LED Verification--->
+      
+DC Motor Speed Control--->
+
+DC Geared Motor Analysis--->
+      
+Servo Motor Calibration--->
+      
+Three-Joint Robotic Arm--->
+      
 Finite State Machine Control
 
 # Features
