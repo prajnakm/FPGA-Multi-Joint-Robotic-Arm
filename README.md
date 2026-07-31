@@ -48,18 +48,6 @@ Real-time robotic arm control
 
 # Motion Sequence
 The robotic arm follows a predefined sequence:
-HOME
-   │
-   ▼
-Move Shoulder
-   │
-   ▼
-Move Elbow + Wrist
-   │
-   ▼
-Hold Position
-   │
-   ▼
-Return Home
+HOME--->Move Shoulder--->Move Elbow + Wrist--->Hold Position--->Return Home
 
 The shoulder joint moves first, followed by simultaneous movement of the elbow and wrist before the arm returns to its home position.
