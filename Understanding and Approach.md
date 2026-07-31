@@ -45,9 +45,9 @@ The project was completed through five progressive stages.
 
 ## Stage 3 – DC Motor Control
 
-The PWM signal was then interfaced with a conventional DC motor through an L293D H-Bridge Motor Driver.
+The PWM signal was then interfaced with a conventional DC motor through an L293D H-Bridge Motor Driver.<br>
 
-# The objectives were to study:
+### The objectives were to study:
 
 1.Motor speed variation<br>
 2.Effect of duty cycle<br>
@@ -81,7 +81,7 @@ This comparison demonstrated why geared motors are preferred in robotic mechanis
 
 Three SG5010 servo motors were used to construct the robotic arm.<br>
 
-The joints include:<br>
+### The joints include:<br>
 1.Shoulder<br>
 2.Elbow<br>
 3.Wrist<br>
@@ -94,7 +94,7 @@ Different switch combinations correspond to predefined robotic arm poses, allowi
 
 To coordinate the robotic arm movement, a Finite State Machine (FSM) was implemented in Verilog HDL.<br>
 
-The movement sequence is:<br>
+### The movement sequence is:<br>
 
 1.Home Position<br>
 2.Move Shoulder<br>
@@ -106,7 +106,7 @@ This sequencing prevents abrupt joint motion and provides smooth, coordinated op
 
 # Hardware Components
 
-The complete hardware setup consists of:<br>
+### The complete hardware setup consists of:<br>
 
 1.Nexys-4 FPGA Development Board<br>
 2.Xilinx Vivado Design Suite<br>
@@ -120,7 +120,7 @@ The complete hardware setup consists of:<br>
 
 # Key Concepts Used
 
-The project integrates several important concepts from digital design, electronics, and robotics, including:<br>
+### The project integrates several important concepts from digital design, electronics, and robotics, including:<br>
 
 1.FPGA-based hardware design<br>
 2.Verilog HDL programming<br>
