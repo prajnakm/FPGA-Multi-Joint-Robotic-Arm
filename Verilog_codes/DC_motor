@@ -1,1 +1,54 @@
+`timescale 1ns / 1ps
 
+module dc_motor_controller(
+
+    input clk,
+    input btnC,
+
+    input [1:0] sw,
+
+    output pwm_out,
+    output dir1,
+    output dir2
+
+);
+
+reg [7:0] counter;
+reg [7:0] duty_cycle;
+
+// PWM Counter
+always @(posedge clk or posedge btnC)
+begin
+
+    if(btnC)
+        counter <= 0;
+    else
+        counter <= counter + 1;
+
+end
+
+// Duty Cycle Selection
+always @(*)
+begin
+
+    case(sw)
+
+        2'b00: duty_cycle = 8'd51;   // 20
+        2'b01: duty_cycle = 8'd128;  // 50
+        2'b10: duty_cycle = 8'd204;  // 80
+        2'b11: duty_cycle = 8'd255;  // 100
+
+        default: duty_cycle = 8'd0;
+
+    endcase
+
+end
+
+// PWM Output
+assign pwm_out = (counter < duty_cycle);
+
+// Forward Direction
+assign dir1 = 1'b1;
+assign dir2 = 1'b0;
+
+endmodule
