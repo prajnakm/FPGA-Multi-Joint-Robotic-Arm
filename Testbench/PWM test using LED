@@ -1,1 +1,53 @@
+`timescale 1ns / 1ps
 
+module pwm_generation_tb;
+
+reg clk;
+reg btnC;
+reg [1:0] sw;
+
+wire led;
+
+pwm_generator uut (
+
+    .clk(clk),
+    .btnC(btnC),
+    .sw(sw),
+    .led(led)
+
+);
+
+// 100 MHz Clock
+always #5 clk = ~clk;
+
+initial
+begin
+
+    clk = 0;
+    btnC = 1;
+    sw = 2'b00;
+
+    #20;
+    btnC = 0;
+
+    // 20%
+    sw = 2'b00;
+    #2000;
+
+    // 50%
+    sw = 2'b01;
+    #2000;
+
+    // 80%
+    sw = 2'b10;
+    #2000;
+
+    // 100%
+    sw = 2'b11;
+    #2000;
+
+    $finish;
+
+end
+
+endmodule
