@@ -1,0 +1,67 @@
+`timescale 1ns / 1ps
+
+module servo_controller_tb;
+
+reg clk;
+reg btnC;
+
+reg [2:0] sw;
+
+wire servo_shoulder;
+wire servo_elbow;
+wire servo_wrist;
+
+servo_controller uut(
+
+    .clk(clk),
+    .btnC(btnC),
+
+    .sw(sw),
+
+    .servo_shoulder(servo_shoulder),
+    .servo_elbow(servo_elbow),
+    .servo_wrist(servo_wrist)
+
+);
+
+always #5 clk = ~clk;
+
+initial
+begin
+
+    clk = 0;
+    btnC = 1;
+    sw = 3'b000;
+
+    #100;
+    btnC = 0;
+
+    sw = 3'b001;
+    #300000000;
+
+    sw = 3'b010;
+    #300000000;
+
+    sw = 3'b011;
+    #300000000;
+
+    sw = 3'b100;
+    #300000000;
+
+    sw = 3'b101;
+    #300000000;
+
+    sw = 3'b110;
+    #300000000;
+
+    sw = 3'b111;
+    #300000000;
+
+    sw = 3'b000;
+    #300000000;
+
+    $finish;
+
+end
+
+endmodule
