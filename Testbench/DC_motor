@@ -1,1 +1,61 @@
+`timescale 1ns / 1ps
 
+module dc_motor_controller_tb;
+
+reg clk;
+reg btnC;
+reg [1:0] sw;
+
+wire pwm_out;
+wire dir1;
+wire dir2;
+
+// Instantiate DUT
+dc_motor_controller uut (
+
+    .clk(clk),
+    .btnC(btnC),
+    .sw(sw),
+
+    .pwm_out(pwm_out),
+    .dir1(dir1),
+    .dir2(dir2)
+
+);
+
+// 100 MHz Clock
+always #5 clk = ~clk;
+
+initial
+begin
+
+    // Initialize signals
+    clk  = 0;
+    btnC = 1;
+    sw   = 2'b00;
+
+    // Reset
+    #20;
+    btnC = 0;
+
+    // 20% Duty Cycle
+    sw = 2'b00;
+    #3000;
+
+    // 50% Duty Cycle
+    sw = 2'b01;
+    #3000;
+
+    // 80% Duty Cycle
+    sw = 2'b10;
+    #3000;
+
+    // 100% Duty Cycle
+    sw = 2'b11;
+    #3000;
+
+    $finish;
+
+end
+
+endmodule
