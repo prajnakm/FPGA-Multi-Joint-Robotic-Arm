@@ -1,0 +1,259 @@
+`timescale 1ns / 1ps
+
+
+
+module servo_controller(
+
+    input clk,
+    input btnC,
+
+    input [2:0] sw,
+
+    output servo_shoulder,
+    output servo_elbow,
+    output servo_wrist
+
+);
+
+reg [20:0] shoulder_pw;
+reg [20:0] elbow_pw;
+reg [20:0] wrist_pw;
+
+reg [31:0] delay_counter;
+reg [2:0] state;
+
+//------------------------------------------------
+// State Machine
+//------------------------------------------------
+
+always @(posedge clk or posedge btnC)
+begin
+
+    if(btnC)
+    begin
+
+        state <= 0;
+        delay_counter <= 0;
+
+    end
+
+    else
+    begin
+
+        delay_counter <= delay_counter + 1;
+
+        case(state)
+
+        //------------------------------------------------
+        // HOME
+        //------------------------------------------------
+
+        3'd0:
+        begin
+
+            shoulder_pw <= 21'd50000;   // 0°
+            elbow_pw    <= 21'd75000;   // 30°
+            wrist_pw    <= 21'd62500;   // 15°
+
+            if(sw != 3'b000)
+            begin
+                delay_counter <= 0;
+                state <= 3'd1;
+            end
+
+        end
+
+        //------------------------------------------------
+        // MOVE SHOULDER
+        //------------------------------------------------
+
+        3'd1:
+        begin
+
+            case(sw)
+
+                3'b001: shoulder_pw <= 21'd100000; //45°
+                3'b010: shoulder_pw <= 21'd150000; //90°
+                3'b011: shoulder_pw <= 21'd200000; //135°
+                3'b100: shoulder_pw <= 21'd250000; //180°
+                3'b101: shoulder_pw <= 21'd150000; //90°
+                3'b110: shoulder_pw <= 21'd100000; //45°
+                3'b111: shoulder_pw <= 21'd250000; //180°
+
+            endcase
+
+            if(delay_counter > 32'd50000000)
+            begin
+                delay_counter <= 0;
+                state <= 3'd2;
+            end
+
+        end
+
+        //------------------------------------------------
+        // MOVE ELBOW + WRIST
+        //------------------------------------------------
+
+        3'd2:
+        begin
+
+            case(sw)
+
+                3'b001:
+                begin
+                    elbow_pw <= 21'd125000; //60°
+                    wrist_pw <= 21'd100000; //45°
+                end
+
+                3'b010:
+                begin
+                    elbow_pw <= 21'd150000; //90°
+                    wrist_pw <= 21'd125000; //60°
+                end
+
+                3'b011:
+                begin
+                    elbow_pw <= 21'd175000; //120°
+                    wrist_pw <= 21'd150000; //90°
+                end
+
+                3'b100:
+                begin
+                    elbow_pw <= 21'd225000; //150°
+                    wrist_pw <= 21'd175000; //120°
+                end
+
+                3'b101:
+                begin
+                    elbow_pw <= 21'd250000; //180°
+                    wrist_pw <= 21'd200000; //135°
+                end
+
+                3'b110:
+                begin
+                    elbow_pw <= 21'd150000; //90°
+                    wrist_pw <= 21'd250000; //180°
+                end
+
+                3'b111:
+                begin
+                    elbow_pw <= 21'd250000; //180°
+                    wrist_pw <= 21'd250000; //180°
+                end
+
+            endcase
+
+            if(delay_counter > 32'd50000000)
+            begin
+                delay_counter <= 0;
+                state <= 3'd3;
+            end
+
+        end
+
+        //------------------------------------------------
+        // HOLD
+        //------------------------------------------------
+
+        3'd3:
+        begin
+
+            if(delay_counter > 32'd50000000)
+            begin
+                delay_counter <= 0;
+                state <= 3'd4;
+            end
+
+        end
+
+        //------------------------------------------------
+        // RETURN HOME
+        //------------------------------------------------
+
+        3'd4:
+        begin
+
+            shoulder_pw <= 21'd50000;
+            elbow_pw    <= 21'd75000;
+            wrist_pw    <= 21'd62500;
+
+            if(delay_counter > 32'd50000000)
+            begin
+                delay_counter <= 0;
+                state <= 3'd0;
+            end
+
+        end
+
+        endcase
+
+    end
+
+end
+
+//------------------------------------------------
+// Servo PWM Modules
+//------------------------------------------------
+
+servo_pwm shoulder_inst(
+
+    .clk(clk),
+    .pulse_width(shoulder_pw),
+    .servo_out(servo_shoulder)
+
+);
+
+servo_pwm elbow_inst(
+
+    .clk(clk),
+    .pulse_width(elbow_pw),
+    .servo_out(servo_elbow)
+
+);
+
+servo_pwm wrist_inst(
+
+    .clk(clk),
+    .pulse_width(wrist_pw),
+    .servo_out(servo_wrist)
+
+);
+
+endmodule
+
+`timescale 1ns / 1ps
+
+module servo_pwm(
+
+    input clk,
+
+    input [20:0] pulse_width,
+
+    output reg servo_out
+
+);
+
+reg [20:0] counter;
+
+always @(posedge clk)
+begin
+
+    if(counter >= 21'd1999999)
+        counter <= 0;
+
+    else
+        counter <= counter + 1;
+
+end
+
+always @(posedge clk)
+begin
+
+    if(counter < pulse_width)
+        servo_out <= 1'b1;
+    else
+        servo_out <= 1'b0;
+
+end
+
+endmodule
